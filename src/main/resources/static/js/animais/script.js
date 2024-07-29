@@ -1,4 +1,4 @@
-listar_animais();
+listar_animais("Todos");
 var cor = getCookie("modo_cor");
 if (cor=="escuro"){
     modo_cor("escuro");
@@ -8,8 +8,7 @@ if (cor=="escuro"){
     document.getElementById('select_cor').value = "claro";
 }
 
-function listar_animais(){
-
+function listar_animais(especie){
     var xhr = new XMLHttpRequest(); 
     xhr.open('GET', 'http://localhost:8080/animais');
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -24,47 +23,50 @@ function listar_animais(){
                 var jsonResponse = JSON.parse(data);
                 var tabela_animais = document.getElementById('tabela_animais');
                 tabela_animais.innerHTML = "";
-                Object.entries(jsonResponse).forEach(([key, value]) => {
-                    var div_linha = document.createElement('div');
-                    div_linha.setAttribute('class', 'col-12 row');
-                    tabela_animais.appendChild(div_linha);
+                Object.entries(jsonResponse).forEach(([key, value]) => {                    
+                    if(especie == value.especie || especie == "Todos"){
+                        
+                        var div_linha = document.createElement('div');
+                        div_linha.setAttribute('class', 'col-12 row');
+                        tabela_animais.appendChild(div_linha);
                     
-                    var div_id = document.createElement('div');
-                    div_id.setAttribute('class', 'col-1 justify-content-center text-justify');
-                    div_id.innerHTML = value.id;
+                        var div_id = document.createElement('div');
+                        div_id.setAttribute('class', 'col-1 justify-content-center text-justify');
+                        div_id.innerHTML = value.id;
                     
-                    var div_especie = document.createElement('div');
-                    div_especie.setAttribute('class', 'col-1 justify-content-center text-justify');
-                    div_especie.innerHTML = value.especie;
+                        var div_especie = document.createElement('div');
+                        div_especie.setAttribute('class', 'col-1 justify-content-center text-justify');
+                        div_especie.innerHTML = value.especie;
                     
-                    var div_descricao = document.createElement('div');
-                    div_descricao.setAttribute('class', 'col-4 justify-content-center text-justify');
-                    div_descricao.innerHTML = value.descricao;
+                        var div_descricao = document.createElement('div');
+                        div_descricao.setAttribute('class', 'col-4 justify-content-center text-justify');
+                        div_descricao.innerHTML = value.descricao;
                     
-                    var div_contato = document.createElement('div');
-                    div_contato.setAttribute('class', 'col-3 justify-content-center text-justify');
-                    div_contato.innerHTML = value.contato;
+                        var div_contato = document.createElement('div');
+                        div_contato.setAttribute('class', 'col-3 justify-content-center text-justify');
+                        div_contato.innerHTML = value.contato;
                     
-                    var div_botoes = document.createElement('div');
-                    div_botoes.setAttribute('class', 'row col-3');
+                        var div_botoes = document.createElement('div');
+                        div_botoes.setAttribute('class', 'row col-3');
                     
-                    var botao_delete = document.createElement('button');
-                    botao_delete.innerHTML = "Apagar";
-                    botao_delete.setAttribute('class', 'btn p-1 col-6');
-                    botao_delete.setAttribute('onclick', "apagar_animal(" + value.id + ")");
-                    div_botoes.appendChild(botao_delete);
+                        var botao_delete = document.createElement('button');
+                        botao_delete.innerHTML = "Apagar";
+                        botao_delete.setAttribute('class', 'btn p-1 col-6');
+                        botao_delete.setAttribute('onclick', "apagar_animal(" + value.id + ")");
+                        div_botoes.appendChild(botao_delete);
                     
-                    var botao_editar = document.createElement('a');
-                    botao_editar.innerHTML = "Editar cadastro";
-                    botao_editar.setAttribute('class', 'btn link_botao p-1 col-6');
-                    botao_editar.setAttribute('href', "http://localhost:8080/views/editar_animal/" + value.id);
-                    div_botoes.appendChild(botao_editar);                    
+                        var botao_editar = document.createElement('a');
+                        botao_editar.innerHTML = "Editar cadastro";
+                        botao_editar.setAttribute('class', 'btn link_botao p-1 col-6');
+                        botao_editar.setAttribute('href', "http://localhost:8080/views/editar_animal/" + value.id);
+                        div_botoes.appendChild(botao_editar);                    
                     
-                    div_linha.appendChild(div_id);
-                    div_linha.appendChild(div_especie);
-                    div_linha.appendChild(div_descricao);
-                    div_linha.appendChild(div_contato);
-                    div_linha.appendChild(div_botoes);                                                                  
+                        div_linha.appendChild(div_id);
+                        div_linha.appendChild(div_especie);
+                        div_linha.appendChild(div_descricao);
+                        div_linha.appendChild(div_contato);
+                        div_linha.appendChild(div_botoes);
+                    }
                 });
             }
         }

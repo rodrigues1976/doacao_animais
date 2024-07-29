@@ -23,7 +23,6 @@ public class Animal {
     
     @Column(name="CONTATO", length=100, nullable=false, unique=false)
     private String contato;
-
     
     public long getId(){
         return this.id;
